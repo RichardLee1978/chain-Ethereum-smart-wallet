@@ -43,7 +43,7 @@ contract BaseScript is Script, Deployers {
         vm.label(address(hookContract), "HookContract");
     }
 
-    function getDeployer() internal returns (address) {
+    function getDeployer() internal view returns (address) {
         address[] memory wallets = vm.getWallets();
 
         if (wallets.length > 0) {
@@ -60,10 +60,10 @@ contract BaseScript is Script, Deployers {
         }
     }
 
-    function getCurrencies() internal pure returns (Currency, Currency) {
+    function getCurrencies() internal view returns (Currency, Currency) {
         require(address(token0) != address(token1));
 
-        if (token0 < token1) {
+        if (address(token0).balance < address(token1).balance) {
             return (Currency.wrap(address(token0)), Currency.wrap(address(token1)));
         } else {
             return (Currency.wrap(address(token1)), Currency.wrap(address(token0)));

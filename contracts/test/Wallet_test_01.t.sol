@@ -18,9 +18,9 @@ import {Constants} from "v4-core/test/utils/Constants.sol";
 
 import {EasyPositionManager} from "../script/libraries/EasyPositionManager.sol";
 
-import {ProxySmartWallet} from "../src/ProxySmartWallet.sol";
+import {ProxyWallet} from "../src/ProxyWallet.sol";
 import {WalletFactory} from "../src/WalletFactory.sol";
-import {BaseTest} from "./BaseTest.t.sol";
+import {BaseTest} from "./Base.t.sol";
 
 import {Actions} from "v4-periphery/src/libraries/Actions.sol";
 import {Commands} from "universal-router/contracts/libraries/Commands.sol";
@@ -43,8 +43,8 @@ contract Wallet_Test_01 is BaseTest {
 
     PoolKey poolKey;
 
-    ProxySmartWallet proxyWallet;
-    ProxySmartWallet freshProxyWallet;
+    ProxyWallet proxyWallet;
+    ProxyWallet freshProxyWallet;
     WalletFactory factory;
     PoolId poolId;
 
@@ -63,7 +63,7 @@ contract Wallet_Test_01 is BaseTest {
         factory = new WalletFactory();
 
         //4.根据以上3个地址再部署代理钱包
-        proxyWallet = new ProxySmartWallet(
+        proxyWallet = new ProxyWallet(
             address(swapRouter), address(poolManager), address(permit2), address(poolManager), address(factory)
         );
 
@@ -231,7 +231,7 @@ contract Wallet_Test_01 is BaseTest {
 
         // !!!!! Should be called from EOA with 7702 delegation !!!!
         address freshProxyWalletAddress = proxyWallet.initFreshWallet();
-        freshProxyWallet = ProxySmartWallet(freshProxyWalletAddress);
+        freshProxyWallet = ProxyWallet(freshProxyWalletAddress);
         // Parameters for TAKE_PAIR
         params[1] = abi.encode(
             currency0,

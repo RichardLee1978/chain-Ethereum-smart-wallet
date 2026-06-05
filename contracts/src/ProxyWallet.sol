@@ -7,22 +7,22 @@ pragma solidity ^0.8.30;
 // =========================
 
 // Uniswap v4 core interfaces and types v4的钩子和接口及类型引用
-import {IPoolManager} from "@uniswap/v4-core/src/interfaces/IPoolManager.sol";
-import {PoolKey} from "@uniswap/v4-core/src/types/PoolKey.sol";
-import {Currency} from "@uniswap/v4-core/src/types/Currency.sol";
+import {IPoolManager} from "v4-core/src/interfaces/IPoolManager.sol";
+import {PoolKey} from "v4-core/src/types/PoolKey.sol";
+import {Currency} from "v4-core/src/types/Currency.sol";
 
 // Uniswap v4 periphery v4周边引用
-import {IPositionManager} from "@uniswap/v4-periphery/src/interfaces/IPositionManager.sol";
+import {IPositionManager} from "v4-periphery/src/interfaces/IPositionManager.sol";
 
 // Permit2 (signature-based ERC20 transfers)
 import {IPermit2} from "permit2/src/interfaces/IPermit2.sol";
 
 // ERC20 helpers
-import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import {IERC20} from "openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
+import {SafeERC20} from "openzeppelin-contracts/contracts/token/ERC20/utils/SafeERC20.sol";
 
 // Test / utility constants (used here for ZERO_BYTES)
-import {Constants} from "@uniswap/v4-core/test/utils/Constants.sol";
+import {Constants} from "v4-core/test/utils/Constants.sol";
 
 // Hookmate Uniswap v4 router abstraction
 import {IUniswapV4Router04} from "hookmate/interfaces/router/IUniswapV4Router04.sol";
