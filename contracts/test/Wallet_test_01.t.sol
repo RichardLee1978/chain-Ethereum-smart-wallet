@@ -71,7 +71,7 @@ contract Wallet_Test_01 is BaseTest {
         //currency0->代币0，currency1->代币1，3000->费用,60->池子的 tick 间隔,IHooks->hooks地址(此处为0表示空)
         poolKey = PoolKey(currency0, currency1, 3000, 60, IHooks(address(0)));
 
-        //6.初始化poolManager
+        //6.初始化poolManager, CurrenciesOutOfOrderOrEqual?
         poolManager.initialize(poolKey, Constants.SQRT_PRICE_1_1);
 
         //7.为资金池计算头寸的下界和上界，根据tickSpacing计算

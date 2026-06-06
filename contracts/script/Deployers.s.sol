@@ -61,7 +61,7 @@ abstract contract Deployers {
         MockERC20 token0 = deployToken("fUSDT", 10_000_000e18, 6);
         MockERC20 token1 = deployToken("fUSDC", 20_000_000e18, 6);
 
-        if (address(token0).balance  > address(token1).balance) {
+        if (token0  >token1) {
             (token0, token1) = (token1, token0);
         }
 

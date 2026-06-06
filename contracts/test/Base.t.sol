@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.26;
 
-import {Test} from "forge-std/Test.sol";
+import {Test,console2} from "forge-std/Test.sol";
 import {Currency} from "v4-core/src/types/Currency.sol";
 
 import {Deployers} from "../script/Deployers.s.sol";
@@ -20,6 +20,11 @@ contract BaseTest is Test, Deployers {
         vm.label(address(poolManager), "V4PoolManager");
         vm.label(address(positionManager), "V4PositionManager");
         vm.label(address(swapRouter), "V4SwapRouter");
+
+        console2.log("Permit2 is: %s", address(permit2));
+        console2.log("poolManager is: %s", address(poolManager));
+        console2.log("positionManager is: %s", address(positionManager));
+        console2.log("swapRouter is: %s", address(swapRouter));
     }
     /**
      * 部署货币对
