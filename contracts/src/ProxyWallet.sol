@@ -100,11 +100,11 @@ contract ProxyWallet {
     IFactory public immutable factory;
 
     /**
-     * @param _router Address of the Uniswap v4 router
-     * @param _poolManager Address of the Uniswap v4 PoolManager
-     * @param _permit2 Address of the Permit2 contract
-     * @param _positionManager Address of the Uniswap v4 PositionManager
-     * @param _factory Address of the wallet factory
+     * @param _router (Address of the Uniswap v4 router) UniswapV4Router地址,生产环境替换为实际地址
+     * @param _poolManager (Address of the Uniswap v4 PoolManager) 资金池管理员
+     * @param _permit2 (Address of the Permit2 contract)
+     * @param _positionManager (Address of the Uniswap v4 PositionManager) 头寸管理员
+     * @param _factory (Address of the wallet factory)
      */
     constructor(address _router, address _poolManager, address _permit2, address _positionManager, address _factory) {
         router = IUniswapV4Router04(payable(_router));
@@ -117,7 +117,7 @@ contract ProxyWallet {
     /**
      * @notice Swap all available balance of one pool token into the other
      *         and transfer up to `_amount` of the resulting token to `_to`.
-     *
+     *         将资金池的所有代币转给别人
      * @dev
      * - Determines swap direction automatically based on `_tokenForTransfer`
      * - Uses swapExactTokensForTokens with `amountOutMin = 0`
@@ -125,9 +125,9 @@ contract ProxyWallet {
      * - Transfers min(actualBalance, _amount) to the recipient
      *
      * @param _poolKey Uniswap v4 pool identifier
-     * @param _tokenForTransfer ERC20 token address that should be sent to `_to`
-     * @param _to Recipient of the final token transfer
-     * @param _amount Desired transfer amount
+     * @param _tokenForTransfer (ERC20 token address that should be sent to `_to`) 别人最终得到的代币
+     * @param _to (Recipient of the final token transfer) 最终收到代币的人
+     * @param _amount (Desired transfer amount) 转账的金额
      */
     function swapAndTransfer(PoolKey memory _poolKey, address _tokenForTransfer, address _to, uint256 _amount)
         external
@@ -138,6 +138,7 @@ contract ProxyWallet {
         uint256 amountIn;
 
         // If token1 is the desired output token, swap token0 -> token1
+        // 如果 资金池里的代币对1就是转移后对方得到的代币
         if (Currency.unwrap(_poolKey.currency1) == _tokenForTransfer) {
             swapDirection = true; // zeroForOne = true
             amountIn = _poolKey.currency0.balanceOf(address(this));
@@ -156,7 +157,7 @@ contract ProxyWallet {
             poolKey: _poolKey,
             hookData: Constants.ZERO_BYTES,
             receiver: address(this), //余额退还到当前地址
-            deadline: block.timestamp + 60
+            deadline: block.timestamp + 60 // ⚠️ unsafe in production
         });
 
         // Determine actual received balance 当前合约地址实际收到的token
@@ -172,17 +173,17 @@ contract ProxyWallet {
     }
 
     /**
-     * @notice Deploy a new proxy wallet using CREATE.
-     * @return freshWallet Address of the newly deployed wallet
+     * @notice (Deploy a new proxy wallet using CREATE) 使用CREATE刷新钱包地址.
+     * @return freshWallet (Address of the newly deployed wallet)返回刷新后的新钱包地址
      */
     function initFreshWallet() external returns (address freshWallet) {
         freshWallet = factory.createWallet(address(this), bytes(""));
     }
 
     /**
-     * @notice Deploy a new proxy wallet using CREATE2 with a deterministic salt.
+     * @notice (Deploy a new proxy wallet using CREATE2 with a deterministic salt.)使用CREATE2刷新钱包地址.
      * @param _salt CREATE2 salt
-     * @return freshWallet Address of the newly deployed wallet
+     * @return freshWallet (Address of the newly deployed wallet)返回刷新后的新钱包地址
      */
     function initFreshWallet(bytes32 _salt) external returns (address freshWallet) {
         freshWallet = factory.createWallet(address(this), bytes(""), _salt);
