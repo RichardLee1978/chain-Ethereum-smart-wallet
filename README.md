@@ -29,24 +29,30 @@ cast wallet new
 ```shell
 cast wallet import deployer2026 --interactive
 ```
-
-### Deploy
+### Deploy Local
+#### 1.运行本地测试链 Run test chain server in local
 ```shell
 # default port is 8545
 $ anvil
 ```
+#### 2.部署本地测试脚本 Deploy in local
 ```shell
-$ # 部署本地测试 Deploy in local
-$ forge script script/DeployFactoryAndWallet.s.sol:DeployFactoryAndWallet --rpc-url localhost --account deployer2026 --broadcast 
+$ forge clean
+$ forge script script/DeployFactoryAndWalletLocal.s.sol:DeployFactoryAndWalletLocal --broadcast --rpc-url localhost --account deployer2026 --verify -vvvv
+```
+#### 3.运行前端工程 Run frontend project
+```shell
+$ cd  frontend
+$ npm run dev
+```
+### Deploy in main Chain
+```shell
+
 $ # 部署币安链 Deploy in BSC
 $ forge script script/DeployFactoryAndWallet.s.sol:DeployFactoryAndWallet --rpc-url bnb_smart_chain --account deployer2026 --sender <YOUR_ADDRESS> --broadcast --verify --etherscan-api-key $ETHERSCAN_TOKEN
 
 $ # 部署uni链 Deploy in Unichain
 $ forge script script/DeployFactoryAndWallet.s.sol:DeployFactoryAndWallet --rpc-url unichain  --account deployer2026 --sender <YOUR_ADDRESS> --broadcast --verify --etherscan-api-key $ETHERSCAN_TOKEN 
-
-$ # 使用Uniswap V4头寸运行演示不停转账的脚本 Run Script for Demo Unstopable transfers from Uniswap V4 position
-$ #  forge script script/InteracteScript_m.s.sol:InteracteScript --rpc-url bnb_smart_chain  --broadcast --via-ir --account deployer2026
-$ # forge script script/InteracteScript_m.s.sol:InteracteScript --rpc-url unichain  --broadcast --via-ir --account deployer2026
 ```
 ### Test
 ```shell
