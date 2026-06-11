@@ -34,9 +34,9 @@ contract Wallet_Test_01 is BaseTest {
     using CurrencyLibrary for Currency;
     using StateLibrary for IPoolManager;
     uint128 public constant WANT_TO_TRANSFER = 100e6;
-    uint128 public constant SLIPPAGE_BPS = 100; // 100 bps - 1%, 10 = 0.1%
+    uint128 public constant SLIPPAGE_BPS = 100; // 滑点 100 bps - 1%, 10 = 0.1%
 
-    address internal beneficiary = address(0xFEEBEEF);
+    address internal beneficiary = address(0xFEEBEEF);//接受转账的人
 
     Currency currency0;
     Currency currency1;
@@ -89,6 +89,8 @@ contract Wallet_Test_01 is BaseTest {
             TickMath.getSqrtPriceAtTick(tickUpper),
             liquidityAmount
         );
+
+        
         //创建头寸
         (tokenId,) = positionManager.mint(
             poolKey,
@@ -201,9 +203,8 @@ contract Wallet_Test_01 is BaseTest {
     }
 
     function test_transferFromWallet() public {
-        /////////////////////////////////////////////////
-        // Pre conditions: two token balanses should  ///
-        // be already at proxy wallet                 ///
+        //////////////////////////////////////////////////
+        // 前提:两个代币应已存于代理钱包中  //////////////
         /////////////////////////////////////////////////
         uint128 liquidityDecrease = (WANT_TO_TRANSFER + WANT_TO_TRANSFER * SLIPPAGE_BPS / 10000) / 2;
         uint256 amount0Min = liquidityDecrease / 2 - 1e6;
@@ -219,7 +220,7 @@ contract Wallet_Test_01 is BaseTest {
         // // Number of parameters depends on our strategy
         bytes[] memory params = new bytes[](2);
 
-        // // Parameters for DECREASE_LIQUIDITY
+        // // 减少流动性的参数
         params[0] = abi.encode(
             tokenId, // Position to decrease+
             liquidityDecrease, // Amount to remove
@@ -268,7 +269,7 @@ contract Wallet_Test_01 is BaseTest {
         //(PoolKey memory poolKey, PositionInfo info)
         (PoolKey memory pK,) = positionManager.getPoolAndPositionInfo(tokenId);
 
-        // For view in debug trace only
+        // 货币对的余额 For view in debug trace only
         pK.currency0.balanceOf(freshProxyWalletAddress);
         pK.currency1.balanceOf(freshProxyWalletAddress);
         //console2.log("freshProxyWallet.router: %s", freshProxyWallet.router());

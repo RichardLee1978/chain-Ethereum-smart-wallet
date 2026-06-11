@@ -49,7 +49,7 @@ contract BaseTest is Test, Deployers {
         string memory chainId = vm.toString(chainid);
         string memory json1="key";
         string memory finalJson = vm.serializeAddress(json1, "address", addr);
-        string memory dirPath = string.concat(string.concat("deploy_ContractsABIs/", name), "_");
+        string memory dirPath = string.concat(string.concat("deploy_ContractsAddr/", name), "_");
         vm.writeJson(finalJson, string.concat(dirPath, string.concat(chainId, ".json"))); 
 
     }

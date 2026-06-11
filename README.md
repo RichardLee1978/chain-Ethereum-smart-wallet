@@ -37,22 +37,35 @@ $ anvil
 ```
 #### 2.部署本地测试脚本 Deploy in local
 ```shell
+$ ## 确认<YOUR_WALLET_ACCOUNTS_ADDRESS>  这个是anvil分配的钱包账号，并且里面有余额(默认分配10000ETH)，--unlocked是必须的，否则无法交易
 $ forge clean
-$ forge script script/DeployFactoryAndWalletLocal.s.sol:DeployFactoryAndWalletLocal --broadcast --rpc-url localhost --account deployer2026 --verify -vvvv
+$ forge script script/DeployFactoryAndWalletLocal.s.sol:DeployFactoryAndWalletLocal --broadcast --rpc-url localhost --sender <YOUR_WALLET_ACCOUNTS_ADDRESS> --unlocked   -vvvv
 ```
-#### 3.运行前端工程 Run frontend project
+
+### 3. 显示已部署代币余额
+```shell
+$ # 显示代币0的总数
+$ cast call <CURRENCY0_ADDRESS> "totalSupply()(uint256)" --rpc-url http://127.0.0.1:8545
+$ # 显示代理钱包内代币0的数量
+$ cast call <CURRENCY0_ADDRESS> "balanceOf(address)" <PROXY_WALLET_ADDERSS>  --rpc-url http://127.0.0.1:8545
+$ # 向代理钱包转账代币0
+$ cast call <CURRENCY0_ADDRESS> "mint(address,uint256)" <PROXY_WALLET_ADDERSS> <AMOUNT> --rpc-url http://127.0.0.1:8545
+```
+
+
+#### 4.运行前端工程 Run frontend project
 ```shell
 $ cd  frontend
 $ npm run dev
 ```
 ### Deploy in main Chain
 ```shell
-
+$ ## 确认<YOUR_WALLET_ACCOUNTS_ADDRESS>  这个是自己的钱包账号，并且里面有余额(部署上链需要真ETH)
 $ # 部署币安链 Deploy in BSC
-$ forge script script/DeployFactoryAndWallet.s.sol:DeployFactoryAndWallet --rpc-url bnb_smart_chain --account deployer2026 --sender <YOUR_ADDRESS> --broadcast --verify --etherscan-api-key $ETHERSCAN_TOKEN
+$ forge script script/DeployFactoryAndWallet.s.sol:DeployFactoryAndWallet --rpc-url bnb_smart_chain --account deployer2026 --sender <YOUR_WALLET_ACCOUNTS_ADDRESS> --broadcast --verify --etherscan-api-key $ETHERSCAN_TOKEN
 
 $ # 部署uni链 Deploy in Unichain
-$ forge script script/DeployFactoryAndWallet.s.sol:DeployFactoryAndWallet --rpc-url unichain  --account deployer2026 --sender <YOUR_ADDRESS> --broadcast --verify --etherscan-api-key $ETHERSCAN_TOKEN 
+$ forge script script/DeployFactoryAndWallet.s.sol:DeployFactoryAndWallet --rpc-url unichain  --account deployer2026 --sender <YOUR_WALLET_ACCOUNTS_ADDRESS> --broadcast --verify --etherscan-api-key $ETHERSCAN_TOKEN 
 ```
 ### Test
 ```shell

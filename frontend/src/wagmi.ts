@@ -13,6 +13,7 @@ export function getConfig() {
       [sepolia.id]: http(),
       [anvil.id]:http()
     },
+   // multiInjectedProviderDiscovery: false//必须关闭多钱包发现，否则在移动端 MetaMask 会重复触发连接
   })
 }
 

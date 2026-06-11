@@ -19,7 +19,9 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "out/*":["../contracts/out/*"],
+      "addr/*":["../contracts/deploy_ContractsABIS/*"]
     }
   },
   "include": [
